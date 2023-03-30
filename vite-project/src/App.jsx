@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import './App.css'
 import Header from "./Header.jsx";
 import Submit from "./submitButton.jsx";
@@ -22,7 +22,7 @@ function App() {
 
     const submitText = () => {
         if (input.trim()) {
-            setToDoList([...toDoList, {id: crypto.randomUUID(), text: input}])
+            setToDoList([...toDoList, {id: crypto.randomUUID(), text: input, isFavorite: false}])
         }
         // clear input after submission
         setInput("")
@@ -48,28 +48,44 @@ function App() {
         return ( <Delete onClick={() => setToDoList([])} name={"Delete all"} /> )
     }
 
-    const filteredSearch = searchText.length > 0 ?
-        toDoList.filter((item) => item.text.toLowerCase().includes(searchText.toLowerCase())) : [];
-
     const searchInList = () => {
+        const filteredSearch = searchText.length > 0 ?
+            toDoList.filter((item) => item.text.toLowerCase().includes(searchText.toLowerCase())) : [];
+
         return (
             <div className="search-list">
                 <button className="exit-button" onClick={ifSearching}>Exit search</button>
                 {checkListLength() && <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>}
                 <ul className="ul-list">
-                    {filteredSearch.map
-                    (
-                        (item) => <li key={item.id}> <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>
-                            <span className="item-text">{item.text}</span></li>
-                    )}
+                    {returnStateObject(filteredSearch)}
                 </ul>
             </div>
         )
     }
 
+    const handleIsImportant = (id) => {
+        setToDoList(toDoList.map(item => (
+            item.id === id ? {
+                ...item,
+                isFavorite: !item.isFavorite
+            } : item)
+        ))
+    }
+
     const ifSearching = () => {
         setIsSearching(prev => !prev)
         searchText.length && setSearchText("");
+    }
+
+
+    const returnStateObject = (object) => {
+        return (
+            object.map((item) =>
+                <li key={item.id}> <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>
+                    <button className="delete-btn" onClick={() => alert("test")}>Edit note</button >
+                    <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Important" : "Not important"}</button >
+                    <span className="item-text">{item.text}</span>
+                </li>))
     }
 
     const displayList = () => {
@@ -80,12 +96,7 @@ function App() {
                 {checkListLength() && <button className="search-button" onClick={ifSearching}>Search for note</button>}
                 {/* ↑ Search button should show only if list exists */}
                 {/* ↓ Only show list if array length is > 0, otherwise print list doesn't exist string */}
-                {!checkListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : toDoList.map
-                (
-                    (item) => <li key={item.id}> <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>
-                        <button className="delete-btn" onClick={() => alert("test")}>Edit note</button >
-                        <span className="item-text">{item.text}</span></li>
-                )}
+                {!checkListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
             </ul>
         )
     }
@@ -93,7 +104,7 @@ function App() {
     const renderLayout = () => {
         return (
             <>
-                <Header title="SOMETHING"/>
+                <Header />
                 <div className="main-content">
                     <input value={input} onKeyDown={submitTextOnEnter} onChange={checkChange} onInput={checkChange} className="input-area " placeholder="Type something here..."/>
                     <Submit onClick={submitText} />
