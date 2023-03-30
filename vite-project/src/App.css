@@ -1,0 +1,125 @@
+body {
+    background-color: #e5f9ff;
+    font-family: sans-serif;
+}
+
+.delete-btn, .search-button, .exit-button {
+    background-color: lightblue;
+    border-style: none;
+    border-radius: 7px;
+    max-width: max-content;
+    margin-top: 0.1rem;
+    margin-left: 1rem;
+    transition: opacity 800ms;
+    padding: 0.4rem 1.2rem;
+}
+
+.header-title {
+    text-align: center;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+}
+
+.display-list {
+    border: 2px solid red;
+}
+
+.submit-btn {
+    background-color: lightblue;
+    margin-left: 10px;
+    width: 12rem;
+    height: 2.6rem;
+    border-style: none;
+    border-radius: 10px;
+    transition: opacity 500ms;
+    font-size: 1.2rem;
+}
+
+.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover {
+    opacity: 60%;
+    cursor: pointer;
+}
+
+.submit-btn:active {
+    border: 2px solid;
+}
+
+.input-area {
+    border-radius: 5px;
+    background-color: lightblue;
+    border-style: none;
+    width: 30rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+    transition: opacity 500ms;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+input::placeholder, .search-field::placeholder {
+    color: black;
+}
+
+.input-area:focus, .input-area:hover, .search-field:focus, .search-field:hover {
+    opacity: 70%;
+}
+
+.ul-list {
+    margin: auto;
+    padding: 0;
+    max-width: 45rem;
+}
+
+.ul-list > li {
+    background-color: #e2ffff;
+    border: 1px solid #57c3ff;
+    list-style: none;
+    margin: 1rem;
+    padding: 1rem;
+    transition: background-color 800ms;
+    border-radius: 15px;
+}
+
+.ul-list > li:hover {
+    background-color: #cefffe;
+}
+
+.item-text {
+    display: block;
+    margin-top: 0.8rem;
+    margin-left: 1.1rem;
+    word-wrap: break-word;
+    line-height: 1.3rem;
+    letter-spacing: 0.3px;
+}
+
+.empty-list-txt {
+    text-align: center;
+    padding: 0.7rem;
+    margin: auto;
+    max-width: 30rem;
+    background-color: rgba(255, 0, 0, 0.6);
+    border-radius: 7px;
+    font-weight: bold;
+    color: white;
+}
+
+.search-list {
+    margin: auto;
+    max-width: 35rem;
+}
+
+.search-field {
+    border-radius: 5px;
+    background-color: lightblue;
+    border-style: none;
+    width: 24.5rem;
+    height: 1.6rem;
+    font-size: 0.9rem;
+    transition: opacity 500ms;
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+}
