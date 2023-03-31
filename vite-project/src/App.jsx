@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './App.css'
 import Header from "./Header.jsx";
 import Submit from "./submitButton.jsx";
@@ -11,6 +11,8 @@ function App() {
     const [searchText, setSearchText] = React.useState("");
     const [isSearching, setIsSearching] = React.useState(false);
     const [showImportantOnly, setShowImportantOnly] = React.useState(false);
+    const [editText, setEditText] = React.useState("");
+    const [isEditing, setIsEditing] = React.useState(false);
     const LIST_EMPTY = "Your list is currently empty. Try to add something.";
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite);
 
@@ -77,6 +79,15 @@ function App() {
         ))
     }
 
+    const handleEdit = (id) => {
+        setToDoList(toDoList.map(item => (
+            item.id === id ? {
+                ...item,
+                text: editText
+            } : item)
+        ))
+    }
+
     const ifSearching = () => {
         setIsSearching(prev => !prev)
         // reset the search input field after exiting search
@@ -88,13 +99,12 @@ function App() {
             object.slice(0).reverse().map((item) =>
                 <li key={item.id}>
                     {!item.isFavorite && <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>}
-                    <button className="delete-btn" onClick={() => alert("test")}>Edit note</button >
-                    <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Unmark important" : "Mark important"}</button >
+                    <button className="delete-btn" onClick={() => prompt(item.id, item.text)}>Edit note</button >
+                    <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Unmark" : "Mark"} important</button >
                     <span className="creation-date">Date submitted: {item.date}</span>
                     <span className="item-text">{item.text}</span>
                 </li>))
     }
-
 
     const highlightImportantNotes = () => {
         if (filterIsFavorite.length > 0){
@@ -144,6 +154,7 @@ function App() {
 
     return (
         <>
+            <input value={toDoList.text} type="text" onChange={e => setEditText(e.target.value)} />
             {!isSearching && renderLayout()}
             <div>
                 {isSearching ? searchInList() : displayList()}
