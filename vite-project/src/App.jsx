@@ -154,7 +154,7 @@ function App() {
 
     return (
         <>
-            <input value={toDoList.text} type="text" onChange={e => setEditText(e.target.value)} />
+        {/*testing here: <input value={toDoList.text} type="text" onChange={e => setEditText(e.target.value)} />*/}
             {!isSearching && renderLayout()}
             <div>
                 {isSearching ? searchInList() : displayList()}
