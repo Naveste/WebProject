@@ -11,8 +11,6 @@ function App() {
     const [searchText, setSearchText] = React.useState("");
     const [isSearching, setIsSearching] = React.useState(false);
     const [showImportantOnly, setShowImportantOnly] = React.useState(false);
-    const [editText, setEditText] = React.useState("");
-    const [isEditing, setIsEditing] = React.useState(false);
     const LIST_EMPTY = "Your list is currently empty. Try to add something.";
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite);
 
@@ -38,7 +36,7 @@ function App() {
     }
 
     const deleteItem = (itemToDelete) => {
-        setToDoList(toDoList.filter((list) => list !== itemToDelete));
+        setToDoList(toDoList.filter((item) => item !== itemToDelete));
     }
 
     const handleSearchChange = (event) => {
@@ -50,7 +48,7 @@ function App() {
     }
 
     const deleteAll = () => {
-                //show delete all only if array length is >1        delete all notes except for ones that are not marked as favorite
+        //show delete all only if array length is >1        delete all notes except for ones that are not marked as favorite
         return ( toDoList.length > 1 && <Delete onClick={() => setToDoList(filterIsFavorite)} name={"Delete all"} /> )
     }
 
@@ -79,13 +77,20 @@ function App() {
         ))
     }
 
-    const handleEdit = (id) => {
+    const handleEdit = (id, newText) => {
         setToDoList(toDoList.map(item => (
             item.id === id ? {
                 ...item,
-                text: editText
+                text: newText
             } : item)
         ))
+    }
+
+    const editNote = (id, text) => {
+        const newText = window.prompt("Edit note:", text);
+        if (newText !== null && newText !== text) {
+            handleEdit(id, newText);
+        }
     }
 
     const ifSearching = () => {
@@ -99,9 +104,13 @@ function App() {
             object.slice(0).reverse().map((item) =>
                 <li key={item.id}>
                     {!item.isFavorite && <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>}
-                    <button className="delete-btn" onClick={() => prompt(item.id, item.text)}>Edit note</button >
+
+                    <button className="edit-btn" onClick={() => {editNote(item.id, item.text)}}>Edit note</button >
+
                     <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Unmark" : "Mark"} important</button >
+
                     <span className="creation-date">Date submitted: {item.date}</span>
+
                     <span className="item-text">{item.text}</span>
                 </li>))
     }
@@ -154,7 +163,6 @@ function App() {
 
     return (
         <>
-        {/*testing here: <input value={toDoList.text} type="text" onChange={e => setEditText(e.target.value)} />*/}
             {!isSearching && renderLayout()}
             <div>
                 {isSearching ? searchInList() : displayList()}

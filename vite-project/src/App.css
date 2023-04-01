@@ -3,7 +3,7 @@ body {
     font-family: sans-serif;
 }
 
-.delete-btn, .search-button, .exit-button {
+.delete-btn, .search-button, .exit-button, .edit-btn {
     background-color: lightblue;
     border-style: none;
     border-radius: 7px;
@@ -38,7 +38,7 @@ body {
     font-size: 1.2rem;
 }
 
-.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover {
+.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover, .edit-btn:hover {
     opacity: 60%;
     cursor: pointer;
 }
@@ -148,4 +148,13 @@ input::placeholder, .search-field::placeholder {
 .edit-input {
     width: 20rem;
     height: 5rem;
+}
+
+.edit-text-field {
+    border: 1px solid #a4e4ff;
+    background-color: #cefffe;
+    height: 5rem;
+    text-align: start;
+    margin-left: 1rem;
+    margin-top: 1rem;
 }
