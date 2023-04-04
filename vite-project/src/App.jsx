@@ -72,7 +72,7 @@ function App() {
             <div className="search-list">
                 <button className="exit-button" onClick={ifSearching}>Exit search</button>
                 {checkToDoListLength() && <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>}
-                {searchText && <h1 className="results-title">Results:</h1>}
+                {searchText && <h1 className="results-title">{filteredSearch.length === 0 ? "No results found" : `${filteredSearch.length} results found:`}</h1>}
                 <ul className="ul-list">
                     {returnStateObject(filteredSearch)}
                 </ul>
