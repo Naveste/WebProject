@@ -1,9 +1,11 @@
 body {
     background-color: #e5f9ff;
     font-family: sans-serif;
+    padding: 0;
+    margin: 0;
 }
 
-.delete-btn, .search-button, .exit-button, .edit-btn {
+.delete-btn, .search-button, .exit-button, .edit-btn, .archive-notes-btn, .archive-btn {
     background-color: lightblue;
     border-style: none;
     border-radius: 7px;
@@ -18,13 +20,9 @@ body {
     text-align: center;
 }
 
-.main-content {
+.search-input-field {
     display: flex;
     justify-content: center;
-}
-
-.display-list {
-    border: 2px solid red;
 }
 
 .submit-btn {
@@ -34,13 +32,19 @@ body {
     height: 2.6rem;
     border-style: none;
     border-radius: 10px;
-    transition: opacity 500ms;
+    transition: opacity 500ms, font-size 700ms;
+    letter-spacing: 1px;
     font-size: 1.2rem;
+    margin-top: 0.1rem;
 }
 
-.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover, .edit-btn:hover {
+.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover, .edit-btn:hover, .archive-notes-btn:hover, .archive-btn:hover {
     opacity: 60%;
     cursor: pointer;
+}
+
+.submit-btn:hover {
+    font-size: 1.5rem;
 }
 
 .submit-btn:active {
@@ -52,11 +56,14 @@ body {
     background-color: lightblue;
     border-style: none;
     width: 30rem;
-    height: 2.5rem;
+    height: 1.8rem;
     font-size: 0.9rem;
-    transition: opacity 500ms;
+    font-family: sans-serif;
+    transition: opacity 500ms, height 1000ms;
     padding-left: 1rem;
-    margin-bottom: 1rem;
+    padding-top: 1rem;
+    margin-bottom: 0.8rem;
+    resize: none;
 }
 
 input::placeholder, .search-field::placeholder {
@@ -65,6 +72,10 @@ input::placeholder, .search-field::placeholder {
 
 .input-area:focus, .input-area:hover, .search-field:focus, .search-field:hover {
     opacity: 70%;
+}
+
+.input-area:focus {
+    height: 6rem;
 }
 
 .ul-list {
@@ -157,4 +168,12 @@ input::placeholder, .search-field::placeholder {
     text-align: start;
     margin-left: 1rem;
     margin-top: 1rem;
+}
+
+@media only screen and (max-width: 546px) {
+    .search-field {
+        max-width: 16rem;
+        margin-top: 0.2rem;
+        margin-left: 1rem;
+    }
 }
