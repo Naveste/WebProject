@@ -47,10 +47,6 @@ function App() {
         setInput("");
     }
 
-    const addItemOnEnter = (event) => {
-        return event.key === 'Enter' && addItem();
-    }
-
     const deleteItem = (itemToDelete) => {
         setToDoList(toDoList.filter((item) => item !== itemToDelete));
     }
@@ -194,6 +190,11 @@ function App() {
     }
 
     const renderLayout = () => {
+
+        const addItemOnEnter = (event) => {
+            return event.key === 'Enter' && addItem();
+        }
+
         return (
             <>
                 <Header />
