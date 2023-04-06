@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './App.css'
 import Header from "./Header.jsx";
 import Submit from "./components/interactions/submitButton.jsx";
 import Delete from "./components/interactions/deleteButton.jsx";
 import {formattedDate} from "./functions/formattedDate.jsx";
 import InputArea from "./components/interactions/InputArea.jsx";
+import Sidebar from "./components/sidebar/index.jsx";
 
 function App() {
     const [toDoList, setToDoList] = useState(() => JSON.parse(localStorage.getItem("listKey")) || []);
@@ -17,11 +18,11 @@ function App() {
 
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite || item.isArchived);
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('listKey', JSON.stringify(toDoList));
     }, [toDoList]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('archiveKey', JSON.stringify(archivedList));
     }, [archivedList]);
 
@@ -69,7 +70,7 @@ function App() {
             toDoList.filter((item) => item.text.toLowerCase().includes(searchText.toLowerCase())) : [];
 
         return (
-            <div className="search-list">
+            <div style={{marginTop: "5px"}} className="search-list">
                 <button className="exit-button" onClick={ifSearching}>Exit search</button>
                 {checkToDoListLength() && <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>}
                 {searchText && <h1 className="results-title">{filteredSearch.length === 0 ? "No results found" : `${filteredSearch.length} results found:`}</h1>}
@@ -182,7 +183,10 @@ function App() {
                     {!showImportantOnly ? "Highlight" : "Hide"} important notes</button>}
                 {/* ↑ Search button should show only if list exists */}
                 {/* ↓ Only show list if array length is > 0, otherwise print list doesn't exist string */}
-                {checkToDoListLength() && <button className="archive-notes-btn" onClick={deleteArchiveList}>Delete archived notes {archivedList.length > 0 && `(${archivedList.length})`}</button>}
+                {checkToDoListLength() &&
+                    <button className="archive-notes-btn" onClick={deleteArchiveList}>
+                        Delete archived notes {archivedList.length > 0 && `(${archivedList.length})`}
+                    </button>}
                 {highlightImportantNotes()}
                 {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
             </ul>
@@ -202,6 +206,12 @@ function App() {
                     <InputArea value={input} onKeyDown={addItemOnEnter} onChange={handleInputChange} />
                     <Submit onClick={addItem} />
                 </div>
+                <Sidebar
+                    archivedList={archivedList}
+                    setArchivedList={setArchivedList}
+                    toDoList={toDoList}
+                    setToDoList={setToDoList}
+                />
             </>
         )
     }
