@@ -1,0 +1,22 @@
+.archived-list {
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word;
+    border: 2px solid red;
+    margin-left: 60%;
+    padding: 1rem;
+    background-color: #f1f1f1;
+    max-width: 20rem;
+}
+
+.toggle-btn {
+    width: 4rem;
+    text-align: center;
+    font-size: 1rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
