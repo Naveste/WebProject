@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import "./module.css"
 
 const SideBar = ({archivedList, setArchivedList, toDoList, setToDoList}) => {
