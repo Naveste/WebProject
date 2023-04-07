@@ -1,38 +1,40 @@
 import React, {useState} from 'react';
 import "./module.css"
-import {formattedDate} from "../../functions/formattedDate.jsx";
 
 const SideBar = ({archivedList, setArchivedList, toDoList, setToDoList}) => {
-    const [toggle, setToggle] = useState(false);
-
-    const handleIsArchived = (id) => {
-        setArchivedList(archivedList.map(item => (
-            item.id === id ? {
-                ...item,
-                isArchived: !item.isArchived,
-                date: formattedDate()
-            } : item)
-        ))
-    }
-
     const deleteItem = (itemToDelete) => {
         setArchivedList(archivedList.filter((item) => item !== itemToDelete));
     }
     const moveFromArchive = (item) => {
-        setToDoList([...toDoList, item]);
-        deleteItem(item)
+        setToDoList([...toDoList, {
+            ...item,
+            isArchived: !item.isArchived,
+        },
+        ]);
+
+        deleteItem(item);
+    }
+
+    const confirmPrompt = (item) => {
+        confirm("Are you sure you want to move the note to the list?") && moveFromArchive(item);
+    }
+
+    const deleteArchiveList = () => {
+        if (archivedList.length > 0) {
+            setArchivedList([]);
+            console.log("clicked");
+        }
     }
 
     return (
         <>
             {archivedList.length > 0 &&
                 <div className="archived-list">
-                    <button className="toggle-btn" onClick={() => setToggle(!toggle)}>Toggle</button>
-                    {toggle && archivedList.map(item =>
-                        !item.isArchived ? <button key={item.id} onClick={() => moveFromArchive(item)}>Move to list</button> :
+                    <button onDoubleClick={deleteArchiveList}>Delete all</button>
+                    {archivedList.map(item =>
                         <ul key={item.id}>
                             <li>
-                                {item.text} <button onDoubleClick={() => handleIsArchived(item.id)}>Unarchive</button>
+                                {item.text} <button onClick={() => confirmPrompt(item)}>Unarchive</button>
                             </li>
                         </ul>
                     )}

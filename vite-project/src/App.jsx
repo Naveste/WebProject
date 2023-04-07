@@ -15,6 +15,7 @@ function App() {
     const [searchText, setSearchText] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [showImportantOnly, setShowImportantOnly] = useState(false);
+    const [showArchived, setShowArchived] = useState(false);
 
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite || item.isArchived);
 
@@ -101,6 +102,7 @@ function App() {
 
     const editNote = (id, text) => {
         const newText = window.prompt("Edit note:", text);
+
         if (newText !== null && newText !== text) {
             handleEdit(id, newText);
         }
@@ -113,37 +115,31 @@ function App() {
     }
 
     const returnStateObject = (object) => {
+        const moveToArchive = (item) => {
+            setArchivedList([...archivedList, {
+                ...item,
+                isArchived: !item.isArchived,
+            },
+            ]);
 
-        const handleIsArchived = (id) => {
-            setToDoList(toDoList.map(item => (
-                item.id === id ? {
-                    ...item,
-                    isArchived: !item.isArchived
-                } : item)
-            ))
-        }
-
-        const deleteAndAddToArchived = (item) => {
-            setArchivedList([...archivedList, item]);
-            deleteItem(item)
+            deleteItem(item);
         }
 
         return (
             object.slice(0).reverse().map((item) =>
-                item.isArchived && !item.isFavorite ? deleteAndAddToArchived(item) :
-                    <li key={item.id}>
-                        {!item.isFavorite && <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>}
+                <li key={item.id}>
+                    {!item.isFavorite && <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>}
 
-                        <button className="edit-btn" onClick={() => {editNote(item.id, item.text)}}>Edit note</button >
+                    <button className="edit-btn" onClick={() => {editNote(item.id, item.text)}}>Edit note</button >
 
-                        <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Unmark" : "Mark"} important</button >
+                    <button className="delete-btn" onClick={() => handleIsImportant(item.id)}>{item.isFavorite ? "Unmark" : "Mark"} important</button >
 
-                        {!item.isFavorite && <button className="archive-btn" onClick={() => handleIsArchived(item.id)}>Archive note</button >}
+                    {!item.isFavorite && <button className="archive-btn" onClick={() => moveToArchive(item)}>Archive note</button >}
 
-                        <span className="creation-date">Date submitted: {item.date}</span>
+                    <span className="creation-date">Date submitted: {item.date}</span>
 
-                        <span className="item-text">{item.text}</span>
-                    </li>))
+                    <span className="item-text">{item.text}</span>
+                </li>))
     }
 
     const highlightImportantNotes = () => {
@@ -166,27 +162,38 @@ function App() {
 
     const displayList = () => {
 
-        const deleteArchiveList = () => {
-            if (archivedList.length > 0) {
-                setArchivedList([]);
-                console.log("clicked");
+        const handleShowArchived = () => {
+            archivedList.length > 0 && setShowArchived(!showArchived)
+        }
+
+        if (archivedList.length === 0 && showArchived) {
+            setShowArchived(false);
+        }
+
+        const showButtons = () => {
+            // show buttons only if list length > 0
+            if (checkToDoListLength()){
+                return (
+                    <>
+                        {deleteAllItems()}
+                        <button className="search-button" onClick={ifSearching}>Search for note</button>
+
+                        <button className="search-button" onClick={() => setShowImportantOnly(prevState => !prevState)}>
+                            {!showImportantOnly ? "Highlight" : "Hide"} important notes
+                        </button>
+
+                        <button className="archive-notes-btn" onClick={handleShowArchived}>
+                            Archived notes {archivedList.length > 0 && `(${archivedList.length})`}
+                        </button>
+                    </>
+                )
             }
         }
 
         const LIST_EMPTY = "Your list is currently empty. Try to add something.";
         return (
             <ul className="ul-list">
-                {/* ↓ Delete button should show only if list exists */}
-                {checkToDoListLength() && deleteAllItems()}
-                {checkToDoListLength() && <button className="search-button" onClick={ifSearching}>Search for note</button>}
-                {checkToDoListLength() && <button className="search-button" onClick={() => setShowImportantOnly(prevState => !prevState)}>
-                    {!showImportantOnly ? "Highlight" : "Hide"} important notes</button>}
-                {/* ↑ Search button should show only if list exists */}
-                {/* ↓ Only show list if array length is > 0, otherwise print list doesn't exist string */}
-                {checkToDoListLength() &&
-                    <button className="archive-notes-btn" onClick={deleteArchiveList}>
-                        Delete archived notes {archivedList.length > 0 && `(${archivedList.length})`}
-                    </button>}
+                {showButtons()}
                 {highlightImportantNotes()}
                 {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
             </ul>
@@ -206,12 +213,12 @@ function App() {
                     <InputArea value={input} onKeyDown={addItemOnEnter} onChange={handleInputChange} />
                     <Submit onClick={addItem} />
                 </div>
-                <Sidebar
+                {showArchived && <Sidebar
                     archivedList={archivedList}
                     setArchivedList={setArchivedList}
                     toDoList={toDoList}
                     setToDoList={setToDoList}
-                />
+                />}
             </>
         )
     }
