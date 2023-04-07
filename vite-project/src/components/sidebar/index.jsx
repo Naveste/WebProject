@@ -28,17 +28,16 @@ const SideBar = ({archivedList, setArchivedList, toDoList, setToDoList}) => {
 
     return (
         <>
-            {archivedList.length > 0 &&
-                <div className="archived-list">
-                    <button onDoubleClick={deleteArchiveList}>Delete all</button>
-                    {archivedList.map(item =>
-                        <ul key={item.id}>
-                            <li>
-                                {item.text} <button onClick={() => confirmPrompt(item)}>Unarchive</button>
-                            </li>
-                        </ul>
-                    )}
-                </div>}
+            <div className="archived-list">
+                <button onDoubleClick={deleteArchiveList}>Delete all</button>
+                {archivedList.map(item =>
+                    <ul key={item.id}>
+                        <li>
+                            {item.text} <button onClick={() => confirmPrompt(item)}>Unarchive</button>
+                        </li>
+                    </ul>
+                )}
+            </div>
         </>
     );
 };
