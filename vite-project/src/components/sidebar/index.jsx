@@ -30,10 +30,12 @@ const SideBar = ({archivedList, setArchivedList, toDoList, setToDoList}) => {
         <>
             <div className="archived-list">
                 <button onDoubleClick={deleteArchiveList}>Delete all</button>
-                {archivedList.map(item =>
-                    <ul key={item.id}>
+                {archivedList.map((item, index) =>
+                    <ul key={index}>
                         <li>
-                            {item.text} <button onClick={() => confirmPrompt(item)}>Unarchive</button>
+                            <p><button onClick={() => confirmPrompt(item)}>Unarchive</button></p>
+                            <p>{index + 1}</p>
+                            <p>{item.text}</p>
                         </li>
                     </ul>
                 )}

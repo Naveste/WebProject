@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import './App.css'
 import Header from "./Header.jsx";
 import Submit from "./components/interactions/submitButton.jsx";
@@ -40,7 +40,8 @@ function App() {
                 text: input.trim(),
                 isFavorite: false,
                 isArchived: false,
-                date: formattedDate()
+                date: formattedDate(),
+                edited: null
             }];
 
         if (input.trim().length > 0) {
@@ -96,7 +97,8 @@ function App() {
         setToDoList(toDoList.map(item => (
             item.id === id ? {
                 ...item,
-                text: newText
+                text: newText,
+                edited: formattedDate()
             } : item)
         ))
     }
@@ -137,7 +139,7 @@ function App() {
 
                     {!item.isFavorite && <button className="archive-btn" onClick={() => moveToArchive(item)}>Archive note</button >}
 
-                    <span className="creation-date">Date submitted: {item.date}</span>
+                    <span className="creation-date">Date submitted: {item.date} {item.edited !== null && `(Edited: ${item.edited})`}</span>
 
                     <span className="item-text">{item.text.match(URL_REGEX) ? clickableURL(item.text) : item.text}</span>
                 </li>

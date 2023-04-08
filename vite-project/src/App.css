@@ -5,6 +5,17 @@ body {
     margin: 0;
 }
 
+a {
+    color: rgb(0, 128, 255);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgba(0, 128, 255, 0.8);
+    text-decoration: underline;
+}
+
+
 .delete-btn, .search-button, .exit-button, .edit-btn, .archive-notes-btn, .archive-btn {
     background-color: lightblue;
     border-style: none;
