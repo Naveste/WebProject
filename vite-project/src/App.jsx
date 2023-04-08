@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import './App.css'
 import Header from "./Header.jsx";
 import Submit from "./components/interactions/submitButton.jsx";
@@ -6,6 +6,7 @@ import Delete from "./components/interactions/deleteButton.jsx";
 import {formattedDate} from "./functions/formattedDate.jsx";
 import InputArea from "./components/interactions/InputArea.jsx";
 import Sidebar from "./components/sidebar/index.jsx";
+import {clickableURL, URL_REGEX} from "./functions/isURL.jsx";
 
 function App() {
     const [toDoList, setToDoList] = useState(() => JSON.parse(localStorage.getItem("listKey")) || []);
@@ -126,8 +127,8 @@ function App() {
         }
 
         return (
-            object.slice(0).reverse().map((item) =>
-                <li key={item.id}>
+            object.slice(0).reverse().map((item, index) =>
+                <li key={index}>
                     {!item.isFavorite && <Delete onClick={() => deleteItem(item)} name={"Delete note"}/>}
 
                     <button className="edit-btn" onClick={() => {editNote(item.id, item.text)}}>Edit note</button >
@@ -138,8 +139,10 @@ function App() {
 
                     <span className="creation-date">Date submitted: {item.date}</span>
 
-                    <span className="item-text">{item.text}</span>
-                </li>))
+                    <span className="item-text">{item.text.match(URL_REGEX) ? clickableURL(item.text) : item.text}</span>
+                </li>
+            )
+        );
     }
 
     const highlightImportantNotes = () => {
