@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from "react";
-import './App.css'
-import Header from "./Header.jsx";
-import Submit from "./components/interactions/submitButton.jsx";
+import './App.css';
 import Delete from "./components/interactions/deleteButton.jsx";
 import {formattedDate} from "./functions/formattedDate.jsx";
-import InputArea from "./components/interactions/InputArea.jsx";
-import Sidebar from "./components/sidebar/index.jsx";
 import {clickableURL, URL_REGEX} from "./functions/isURL.jsx";
+import RenderLayout from "./components/RenderLayout.jsx";
 
 function App() {
     const [toDoList, setToDoList] = useState(() => JSON.parse(localStorage.getItem("listKey")) || []);
@@ -167,6 +164,8 @@ function App() {
 
     const displayList = () => {
 
+        const LIST_EMPTY = "Your list is currently empty. Try to add something.";
+
         const handleShowArchived = () => {
             archivedList.length > 0 && setShowArchived(!showArchived)
         }
@@ -195,7 +194,6 @@ function App() {
             }
         }
 
-        const LIST_EMPTY = "Your list is currently empty. Try to add something.";
         return (
             <ul className="ul-list">
                 {showButtons()}
@@ -205,32 +203,9 @@ function App() {
         )
     }
 
-    const renderLayout = () => {
-
-        const addItemOnEnter = (event) => {
-            return event.key === 'Enter' && addItem();
-        }
-
-        return (
-            <>
-                <Header />
-                <div className="search-input-field">
-                    <InputArea value={input} onKeyDown={addItemOnEnter} onChange={handleInputChange} />
-                    <Submit onClick={addItem} />
-                </div>
-                {showArchived && <Sidebar
-                    archivedList={archivedList}
-                    setArchivedList={setArchivedList}
-                    toDoList={toDoList}
-                    setToDoList={setToDoList}
-                />}
-            </>
-        )
-    }
-
     return (
         <>
-            {!isSearching && renderLayout()}
+            {!isSearching && <RenderLayout {...{handleInputChange, addItem, input, archivedList, setArchivedList, toDoList, setToDoList, showArchived}} />}
             {isSearching ? searchInList() : displayList()}
         </>
     )
