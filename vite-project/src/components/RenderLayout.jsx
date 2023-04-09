@@ -3,6 +3,7 @@ import InputArea from "./interactions/InputArea.jsx";
 import Submit from "./interactions/submitButton.jsx";
 import Sidebar from "./sidebar/index.jsx";
 import React from "react";
+
 const RenderLayout = (
     {
         handleInputChange,
