@@ -1,4 +1,4 @@
-import Header from "../Header.jsx";
+import Header from "./Header.jsx";
 import InputArea from "./interactions/InputArea.jsx";
 import Submit from "./interactions/submitButton.jsx";
 import Sidebar from "./sidebar/index.jsx";
