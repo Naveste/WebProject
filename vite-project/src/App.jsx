@@ -4,6 +4,8 @@ import Delete from "./components/interactions/deleteButton.jsx";
 import {formattedDate} from "./functions/formattedDate.jsx";
 import {clickableURL, URL_REGEX} from "./functions/isURL.jsx";
 import RenderLayout from "./components/RenderLayout.jsx";
+import SearchInList from "./components/SearchInList.jsx";
+import DisplayList from "./components/DisplayList.jsx";
 
 function App() {
     const [toDoList, setToDoList] = useState(() => JSON.parse(localStorage.getItem("listKey")) || []);
@@ -12,10 +14,7 @@ function App() {
     const [input, setInput] = useState("");
     const [searchText, setSearchText] = useState("");
     const [isSearching, setIsSearching] = useState(false);
-    const [showImportantOnly, setShowImportantOnly] = useState(false);
     const [showArchived, setShowArchived] = useState(false);
-
-    const filterIsFavorite = toDoList.filter((item) => item.isFavorite || item.isArchived);
 
     useEffect(() => {
         localStorage.setItem('listKey', JSON.stringify(toDoList));
@@ -28,6 +27,10 @@ function App() {
     const handleInputChange = (event) => {
         event.preventDefault();
         setInput(event.target.value)
+    }
+
+    if (archivedList.length === 0 && showArchived) {
+        setShowArchived(false);
     }
 
     const addItem = () => {
@@ -52,33 +55,8 @@ function App() {
         setToDoList(toDoList.filter((item) => item !== itemToDelete));
     }
 
-    const handleSearchChange = (event) => {
-        setSearchText(event.target.value);
-    }
-
     const checkToDoListLength = (len = 0) => {
         return toDoList.length > len
-    }
-
-    const deleteAllItems = () => {
-        //show delete all only if array length is >1        delete all notes except for ones that are not marked as favorite
-        return ( checkToDoListLength(1) && <Delete onClick={() => setToDoList(filterIsFavorite)} name={"Delete all"} /> )
-    }
-
-    const searchInList = () => {
-        const filteredSearch = searchText.length > 0 ?
-            toDoList.filter((item) => item.text.toLowerCase().includes(searchText.toLowerCase())) : [];
-
-        return (
-            <div style={{marginTop: "5px"}} className="search-list">
-                <button className="exit-button" onClick={ifSearching}>Exit search</button>
-                {checkToDoListLength() && <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>}
-                {searchText && <h1 className="results-title">{filteredSearch.length === 0 ? "No results found" : `${filteredSearch.length} results found:`}</h1>}
-                <ul className="ul-list">
-                    {returnStateObject(filteredSearch)}
-                </ul>
-            </div>
-        )
     }
 
     const handleIsImportant = (id) => {
@@ -144,69 +122,13 @@ function App() {
         );
     }
 
-    const highlightImportantNotes = () => {
-        if (filterIsFavorite.length > 0){
-            if (showImportantOnly) {
-                return (
-                    <>
-                        <h1 className="important-notes">Important notes: </h1>
-                        {returnStateObject(filterIsFavorite)}
-                        <hr className="horizontal-line"/>
-                    </>
-                );
-            } else {
-                return null;
-            }
-        } else if (showImportantOnly){
-            return <h1 className="important-notes">You haven't marked any notes as important.</h1>
-        }
-    }
-
-    const displayList = () => {
-
-        const LIST_EMPTY = "Your list is currently empty. Try to add something.";
-
-        const handleShowArchived = () => {
-            archivedList.length > 0 && setShowArchived(!showArchived)
-        }
-
-        if (archivedList.length === 0 && showArchived) {
-            setShowArchived(false);
-        }
-
-        const showButtons = () => {
-            // show buttons only if list length > 0
-            if (checkToDoListLength()){
-                return (
-                    <>
-                        {deleteAllItems()}
-                        <button className="search-button" onClick={ifSearching}>Search for note</button>
-
-                        <button className="search-button" onClick={() => setShowImportantOnly(prevState => !prevState)}>
-                            {!showImportantOnly ? "Highlight" : "Hide"} important notes
-                        </button>
-
-                        <button className="archive-notes-btn" onClick={handleShowArchived}>
-                            Archived notes {archivedList.length > 0 && `(${archivedList.length})`}
-                        </button>
-                    </>
-                )
-            }
-        }
-
-        return (
-            <ul className="ul-list">
-                {showButtons()}
-                {highlightImportantNotes()}
-                {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
-            </ul>
-        )
-    }
-
     return (
         <>
             {!isSearching && <RenderLayout {...{handleInputChange, addItem, input, archivedList, setArchivedList, toDoList, setToDoList, showArchived}} />}
-            {isSearching ? searchInList() : displayList()}
+
+            {isSearching ?
+                <SearchInList {...{toDoList, ifSearching, checkToDoListLength, returnStateObject, searchText, setSearchText}} /> :
+                <DisplayList {...{toDoList, setToDoList, checkToDoListLength, returnStateObject, archivedList, setShowArchived, showArchived, ifSearching} } />}
         </>
     )
 }
