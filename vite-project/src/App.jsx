@@ -6,6 +6,7 @@ import {clickableURL, URL_REGEX} from "./functions/isURL.jsx";
 import RenderLayout from "./components/RenderLayout.jsx";
 import SearchInList from "./components/SearchInList.jsx";
 import DisplayList from "./components/DisplayList.jsx";
+import {AppContext} from "./functions/AppContext.jsx";
 
 function App() {
     const [toDoList, setToDoList] = useState(() => JSON.parse(localStorage.getItem("listKey")) || []);
@@ -53,10 +54,6 @@ function App() {
 
     const deleteItem = (itemToDelete) => {
         setToDoList(toDoList.filter((item) => item !== itemToDelete));
-    }
-
-    const checkToDoListLength = (len = 0) => {
-        return toDoList.length > len
     }
 
     const handleIsImportant = (id) => {
@@ -123,13 +120,14 @@ function App() {
     }
 
     return (
+        <AppContext.Provider value={{toDoList, setToDoList, handleInputChange, addItem, input, archivedList,
+            setArchivedList, showArchived, setShowArchived, ifSearching, returnStateObject, searchText, setSearchText}}>
         <>
-            {!isSearching && <RenderLayout {...{handleInputChange, addItem, input, archivedList, setArchivedList, toDoList, setToDoList, showArchived}} />}
+            {!isSearching && <RenderLayout />}
 
-            {isSearching ?
-                <SearchInList {...{toDoList, ifSearching, checkToDoListLength, returnStateObject, searchText, setSearchText}} /> :
-                <DisplayList {...{toDoList, setToDoList, checkToDoListLength, returnStateObject, archivedList, setShowArchived, showArchived, ifSearching} } />}
+            {isSearching ? <SearchInList /> : <DisplayList />}
         </>
+        </AppContext.Provider>
     )
 }
 

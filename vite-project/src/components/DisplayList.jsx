@@ -1,21 +1,18 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import Delete from "./interactions/deleteButton.jsx";
+import {AppContext} from "../functions/AppContext.jsx";
 
-const DisplayList = (
-    {
-        toDoList,
-        setToDoList,
-        checkToDoListLength,
-        returnStateObject,
-        archivedList,
-        setShowArchived,
-        showArchived,
-        ifSearching
-    }) => {
+const DisplayList = () => {
+
+    const {toDoList, setToDoList, returnStateObject, archivedList, setShowArchived, showArchived, ifSearching} = useContext(AppContext);
 
     const [showImportantOnly, setShowImportantOnly] = useState(false);
     const LIST_EMPTY = "Your list is currently empty. Try to add something.";
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite || item.isArchived);
+
+    const checkToDoListLength = (len = 0) => {
+        return toDoList.length > len
+    }
 
     const deleteAllItems = () => {
         //show delete all only if array length is >1        delete all notes except for ones that are not marked as favorite

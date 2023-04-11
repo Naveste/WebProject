@@ -1,14 +1,11 @@
-import React from "react";
+import React, {useContext} from "react";
+import {AppContext} from "../functions/AppContext.jsx";
 
-const SearchInList = (
-    {
-        searchText,
-        setSearchText,
-        toDoList,
-        ifSearching,
-        checkToDoListLength,
-        returnStateObject
-    }) => {
+const SearchInList = () => {
+
+    const {searchText, setSearchText, ifSearching, checkToDoListLength, returnStateObject} = useContext(AppContext);
+
+    const {toDoList} = useContext(AppContext);
 
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);

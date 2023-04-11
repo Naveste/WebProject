@@ -1,7 +1,12 @@
-import React from 'react';
-import "./module.css"
+import React, {useContext} from 'react';
+import "./module.css";
+import {AppContext} from "../../functions/AppContext.jsx";
 
-const SideBar = ({archivedList, setArchivedList, toDoList, setToDoList, showArchived}) => {
+const SideBar = () => {
+
+    const {archivedList, setArchivedList, toDoList, setToDoList, showArchived} = useContext(AppContext);
+
+
     const deleteItem = (itemToDelete) => {
         setArchivedList(archivedList.filter((item) => item !== itemToDelete));
     }
