@@ -3,9 +3,7 @@ import {AppContext} from "../functions/AppContext.jsx";
 
 const SearchInList = () => {
 
-    const {searchText, setSearchText, ifSearching, checkToDoListLength, returnStateObject} = useContext(AppContext);
-
-    const {toDoList} = useContext(AppContext);
+    const {toDoList, searchText, setSearchText, ifSearching, returnStateObject} = useContext(AppContext);
 
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
@@ -16,12 +14,17 @@ const SearchInList = () => {
 
     return (
         <div style={{marginTop: "5px"}} className="search-list">
+
             <button className="exit-button" onClick={ifSearching}>Exit search</button>
-            {checkToDoListLength() && <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>}
+
+            <input className="search-field" value={searchText} onChange={handleSearchChange} placeholder="Search for note(s)..."/>
+
             {searchText && <h1 className="results-title">{filteredSearch.length === 0 ? "No results found" : `${filteredSearch.length} results found:`}</h1>}
+
             <ul className="ul-list">
                 {returnStateObject(filteredSearch)}
             </ul>
+
         </div>
     )
 }
