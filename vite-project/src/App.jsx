@@ -16,6 +16,14 @@ function App() {
     const [searchText, setSearchText] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [showArchived, setShowArchived] = useState(false);
+    const [showImportantOnly, setShowImportantOnly] = useState(false);
+
+    function contextValues(){
+        return {
+            toDoList, setToDoList, handleInputChange, addItem, input, archivedList,
+            setArchivedList, showArchived, setShowArchived, ifSearching, returnStateObject,
+            searchText, setSearchText, showImportantOnly, setShowImportantOnly}
+    }
 
     useEffect(() => {
         localStorage.setItem('listKey', JSON.stringify(toDoList));
@@ -53,6 +61,11 @@ function App() {
     }
 
     const deleteItem = (itemToDelete) => {
+
+        if (toDoList.length === 1 && showImportantOnly){
+            setShowImportantOnly(false);
+        }
+
         setToDoList(toDoList.filter((item) => item !== itemToDelete));
     }
 
@@ -120,8 +133,7 @@ function App() {
     }
 
     return (
-        <AppContext.Provider value={{toDoList, setToDoList, handleInputChange, addItem, input, archivedList,
-            setArchivedList, showArchived, setShowArchived, ifSearching, returnStateObject, searchText, setSearchText}}>
+        <AppContext.Provider value={contextValues()}>
         <>
             {!isSearching && <RenderLayout />}
 

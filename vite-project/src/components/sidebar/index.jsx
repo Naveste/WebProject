@@ -6,7 +6,6 @@ const SideBar = () => {
 
     const {archivedList, setArchivedList, toDoList, setToDoList, showArchived} = useContext(AppContext);
 
-
     const deleteItem = (itemToDelete) => {
         setArchivedList(archivedList.filter((item) => item !== itemToDelete));
     }

@@ -49,8 +49,13 @@ a:hover {
     margin-top: 0.1rem;
 }
 
-.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover, .edit-btn:hover, .archive-notes-btn:hover, .archive-btn:hover {
+.disabled {
     opacity: 60%;
+    pointer-events: none;
+}
+
+.submit-btn:hover, .delete-btn:hover, .search-button:hover, .exit-button:hover, .edit-btn:hover, .archive-notes-btn:hover, .archive-btn:hover {
+    opacity: 70%;
     cursor: pointer;
 }
 

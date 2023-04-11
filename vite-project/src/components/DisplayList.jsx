@@ -1,12 +1,13 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import Delete from "./interactions/deleteButton.jsx";
 import {AppContext} from "../functions/AppContext.jsx";
 
 const DisplayList = () => {
 
-    const {toDoList, setToDoList, returnStateObject, archivedList, setShowArchived, showArchived, ifSearching} = useContext(AppContext);
+    const {toDoList, setToDoList, returnStateObject, archivedList,
+        setShowArchived, showArchived, ifSearching, showImportantOnly, setShowImportantOnly} = useContext(AppContext);
 
-    const [showImportantOnly, setShowImportantOnly] = useState(false);
+
     const LIST_EMPTY = "Your list is currently empty. Try to add something.";
     const filterIsFavorite = toDoList.filter((item) => item.isFavorite || item.isArchived);
 
@@ -15,8 +16,19 @@ const DisplayList = () => {
     }
 
     const deleteAllItems = () => {
+
+        const conditions = () => {
+            setToDoList(filterIsFavorite);
+
+            if (showImportantOnly && filterIsFavorite.length === 0){
+                setShowImportantOnly(false);
+            }
+        }
+
         //show delete all only if array length is >1        delete all notes except for ones that are not marked as favorite
-        return ( checkToDoListLength(1) && <Delete onClick={() => setToDoList(filterIsFavorite)} name={"Delete all"} /> )
+        return (
+            checkToDoListLength(1) && <Delete onClick={conditions} name={"Delete all"} />
+        )
     }
 
     const highlightImportantNotes = () => {
@@ -64,7 +76,7 @@ const DisplayList = () => {
     return (
         <ul className="ul-list">
             {showButtons()}
-            {highlightImportantNotes()}
+            {checkToDoListLength() && highlightImportantNotes()}
             {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
         </ul>
     )
