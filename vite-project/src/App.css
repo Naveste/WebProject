@@ -59,10 +59,6 @@ a:hover {
     cursor: pointer;
 }
 
-.submit-btn:hover {
-    font-size: 1.5rem;
-}
-
 .submit-btn:active {
     border: 2px solid;
 }
@@ -154,13 +150,6 @@ input::placeholder, .search-field::placeholder {
 .important-notes, .results-title {
     margin-top: 1rem;
     text-align: center;
-}
-
-.horizontal-line {
-    border: 3px solid #57c3ff;
-    border-radius: 3px;
-    max-width: 42rem;
-    margin-bottom: 2rem;
 }
 
 .creation-date {

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './App.css';
 import Delete from "./components/interactions/deleteButton.jsx";
 import {formattedDate} from "./functions/formattedDate.jsx";
-import {clickableURL, URL_REGEX} from "./functions/isURL.jsx";
+import {convertToLink, URL_REGEX} from "./functions/convertToLink.jsx";
 import RenderLayout from "./components/RenderLayout.jsx";
 import SearchInList from "./components/SearchInList.jsx";
 import DisplayList from "./components/DisplayList.jsx";
@@ -126,7 +126,7 @@ function App() {
 
                     <span className="creation-date">Date submitted: {item.date} {item.edited !== null && `(Edited: ${item.edited})`}</span>
 
-                    <span className="item-text">{item.text.match(URL_REGEX) ? clickableURL(item.text) : item.text}</span>
+                    <span className="item-text">{item.text.match(URL_REGEX) ? convertToLink(item.text) : item.text}</span>
                 </li>
             )
         );

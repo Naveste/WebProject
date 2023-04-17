@@ -3,7 +3,7 @@ import React, {Fragment} from "react";
 export const URL_REGEX= /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
 // function for converting URL to a clickable link
-export const clickableURL = (content) => {
+export const convertToLink = (content) => {
     const words = content.split(' ');
     return (
         <p>

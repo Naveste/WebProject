@@ -38,13 +38,12 @@ const DisplayList = () => {
                     <>
                         <h1 className="important-notes">Important notes: </h1>
                         {returnStateObject(filterIsFavorite)}
-                        <hr className="horizontal-line"/>
                     </>
                 );
             } else {
                 return null;
             }
-        } else if (showImportantOnly){
+        } else {
             return <h1 className="important-notes">You haven't marked any notes as important.</h1>
         }
     }
@@ -54,6 +53,7 @@ const DisplayList = () => {
     }
 
     const showButtons = () => {
+        const archivedListLength = archivedList.length > 0;
         // show buttons only if list length > 0
         if (checkToDoListLength()){
             return (
@@ -62,12 +62,12 @@ const DisplayList = () => {
                     <button className="search-button" onClick={ifSearching}>Search for note</button>
 
                     <button className="search-button" onClick={() => setShowImportantOnly(prevState => !prevState)}>
-                        {!showImportantOnly ? "Highlight" : "Hide"} important notes
+                        {!showImportantOnly ? "Show" : "Hide"} important notes {!showImportantOnly && "only"}
                     </button>
 
-                    <button className="archive-notes-btn" onClick={handleShowArchived}>
-                        Archived notes {archivedList.length > 0 && `(${archivedList.length})`}
-                    </button>
+                    {archivedListLength && <button className="archive-notes-btn" onClick={handleShowArchived}>
+                        Archived notes {archivedListLength && `(${archivedList.length})`}
+                    </button>}
                 </>
             )
         }
@@ -76,8 +76,7 @@ const DisplayList = () => {
     return (
         <ul className="ul-list">
             {showButtons()}
-            {checkToDoListLength() && highlightImportantNotes()}
-            {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : returnStateObject(toDoList)}
+            {!checkToDoListLength() ? <div className="empty-list-txt">{LIST_EMPTY}</div> : showImportantOnly ? highlightImportantNotes() : returnStateObject(toDoList)}
         </ul>
     )
 }
